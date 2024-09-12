@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Selection</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+        <div class="p-8">
+            <h1 class="text-2xl font-bold mb-4">Select Text Lines</h1>
+            <form id="textForm">
+                <div id="textLines" class="space-y-2"></div>
+                <button type="submit" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Submit</button>
+            </form>
+            <div id="result" class="mt-4"></div>
+        </div>
+    </div>
+
+    <script>
+        const texts = [
+            "The quick brown fox jumps over the lazy dog.",
+            "To be or not to be, that is the question.",
+            "All that glitters is not gold.",
+            "A journey of a thousand miles begins with a single step.",
+            "Where there's a will, there's a way.",
+            "Actions speak louder than words.",
+            "Knowledge is power.",
+            "Time is money.",
+            "Practice makes perfect.",
+            "Better late than never."
+        ];
+
+        const textLinesDiv = document.getElementById('textLines');
+        texts.forEach((text, index) => {
+            const div = document.createElement('div');
+            div.innerHTML = `
+                <label class="flex items-center">
+                    <input type="checkbox" name="text${index}" value="${index}" class="mr-2">
+                    <span>${text}</span>
+                </label>
+            `;
+            textLinesDiv.appendChild(div);
+        });
+
+        document.getElementById('textForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const selectedTexts = [];
+            const checkboxes = this.querySelectorAll('input[type="checkbox"]:checked');
+            checkboxes.forEach(checkbox => {
+                selectedTexts.push({
+                    number: parseInt(checkbox.value),
+                    text: texts[checkbox.value]
+                });
+            });
+            document.getElementById('result').innerHTML = `
+                <h2 class="text-xl font-semibold mb-2">Selected Texts:</h2>
+                <pre class="bg-gray-200 p-2 rounded">${JSON.stringify(selectedTexts, null, 2)}</pre>
+            `;
+        });
+    </script>
+</body>
+</html>
